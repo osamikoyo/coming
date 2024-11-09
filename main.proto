@@ -1,0 +1,186 @@
+syntax = "proto3";
+
+option go_package = "/proto";
+
+message Homework{
+    string subject = 1;
+    string teacherfirstname = 2;
+    string teachersecondname = 3;
+    string date = 4;
+    string texthomework = 5;
+    int64 gtoupnumber = 6;
+}
+message ReqHomework{
+    Homework homework = 1;
+}
+message User{
+    string studentsfirstname = 1;
+    string studentssecondname = 2;
+    string email = 3;
+    string password = 4;
+    string token = 5;
+    uint64 commings = 6;
+}
+message UserReq{
+    User user = 1;
+}
+message Comming{
+    string subject = 1;
+    string studentsfirstname = 2;
+    string studentssecondname = 3;
+    string date = 4;
+    int64 part = 5;
+}
+message ReqComming{
+    Comming comming = 1;
+}
+message TKN{
+    string token = 1;
+}
+
+message Lesson{
+    string subject = 1;
+    string teacherfirstname = 2;
+    string teachersecondname = 3;
+    int64 groupnumber = 4;
+    int64 ordernumber = 5;
+    string dateday = 6;
+}
+
+message ReqLesson{
+    Lesson lesson = 1;
+}
+
+message Teacher{
+    string teacherfirstname = 1;
+    string teachersecondname = 2;
+    string email = 3;
+    string password = 4;
+    string token = 5;
+    string subject = 6;
+}
+
+message ReqTeacher{
+    Teacher teacher = 1;
+}
+
+message Mark{
+    string subject = 1;
+    string studentsfirstname = 2;
+    string studentssecondname = 3;
+    int64 count = 4;
+    string comment = 5;
+    int64 part = 6;
+    string date = 7;
+    string hash = 8;
+}
+
+message ReqMark{
+    Mark mark = 1;
+}
+
+message HelpMark{
+    int64 part = 1;
+    string studentsfirstname = 2;
+    string studentssecondname = 3;
+    string subject = 4;
+}
+
+message ReqHelpMark{
+    HelpMark helpmark = 1;
+}
+
+message HelpLesson{
+    string dateday = 1;
+    int64 group = 2;
+}
+
+message ReqHelpLesson{
+    HelpLesson helplesson = 1;
+}
+
+message HelpHomeWork{
+    string dateday = 1;
+    int64 group = 2;
+    string subject = 3;
+}
+
+message ReqHelpHomeWork{
+    HelpHomeWork helphomework = 1;
+}
+
+message Response{
+    string Status = 1;
+}
+
+message ReqHelp{
+    ReqHelpHomeWork new = 1;
+    ReqHelpHomeWork old = 2;
+}
+
+message RespHomeWorks{
+    repeated Homework homeworks = 1;
+}
+
+message RespComming{
+    repeated Comming commings = 1;
+}
+
+message RespLesson{
+    repeated Lesson lessons = 1;
+}
+
+message HelpGetLessons{
+    string dateday = 1;
+    int64 group = 2;
+}
+
+message HelpLessonUpdate{
+    Lesson old = 1;
+    Lesson new = 2;
+}
+
+message RespHelpMark{
+    HelpMark mark = 1;
+}
+
+message RespTeacher{
+    Teacher teacher = 1;
+}
+
+service HomeWorkMaking{
+    rpc Create (ReqHomework) returns (Response);
+    rpc GetHomeWork (HelpHomeWork) returns (RespHomeWorks);
+    rpc UpdateHomeWork (ReqHelp) returns (Response);
+}
+
+service CommingMaking{
+    rpc Create (ReqComming) returns (Response);
+    rpc Get (UserReq) returns (RespComming);
+    rpc Remove (ReqComming) returns (Response);
+}
+
+service LessonsMaking{
+    rpc Create (ReqLesson) returns (Response);
+    rpc Get (HelpGetLessons) returns (RespLesson);
+    rpc Update (HelpGetLessons) returns (Response);
+    rpc Delete (ReqLesson) returns (Response);
+}
+
+service UserMaking{
+    rpc Register (UserReq) returns (Response);
+    rpc Login (UserReq) returns (Response);
+    rpc Auth (UserReq) returns (TKN);
+}
+
+service MarksMaking{
+    rpc Create (ReqMark) returns (Response);
+    rpc Delete (ReqHelpMark) returns (Response);
+    rpc Get (ReqHelpMark) returns (RespHelpMark);
+}
+
+service TeacherMaking{
+    rpc Create (ReqTeacher) returns (Response);
+    rpc Login (ReqTeacher) returns (RespTeacher);
+    rpc Auth (ReqTeacher) returns (TKN);
+}
